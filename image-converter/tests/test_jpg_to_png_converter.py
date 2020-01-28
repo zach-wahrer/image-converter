@@ -2,7 +2,8 @@
 
 import unittest
 from jpg_to_png_converter import (jpgs_to_convert, input_folder_exists,
-                                  verify_command_args, pathlib)
+                                  verify_command_args, verify_output_folder,
+                                  pathlib)
 
 
 class TestJPGToPNG(unittest.TestCase):
@@ -56,6 +57,22 @@ class TestJPGToPNG(unittest.TestCase):
     def test_argv_only_2(self):
         args = ['jpg_to_png_converter.py', 'images/']
         input = verify_command_args(args)
+        self.assertFalse(input)
+
+    # Output folder verification
+    def test_output_folder_previously_exists(self):
+        input = verify_output_folder('tests/empty')
+        output = pathlib.Path('tests/empty')
+        self.assertEqual(input, output)
+
+    def test_output_folder_create_folder(self):
+        input = verify_output_folder('tests/test_output')
+        output = pathlib.Path('tests/test_output')
+        self.assertEqual(input, output)
+        output.rmdir()
+
+    def test_output_folder_cannot_create_folder(self):
+        input = verify_output_folder('tests/this_does_not_exist/test_output')
         self.assertFalse(input)
 
 

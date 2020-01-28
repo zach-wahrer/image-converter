@@ -21,7 +21,10 @@ def main():
     if not files_to_convert:
         quit()
 
-    # Check if output_folder exists, if not, create
+    verified_output_folder = verify_output_folder(output_folder)
+    if not verified_output_folder:
+        quit()
+    print("Working")
 
     # Loop through input folder
     # Convert images to png
@@ -48,9 +51,18 @@ def input_folder_exists(input_folder: str) -> list:
     return files_to_convert
 
 
-def verify_output_folder():
+def verify_output_folder(output_folder: str) -> pathlib:
     """Check output folder exists, create if it doesn't."""
-    pass
+    check_folder = pathlib.Path(output_folder)
+    if not check_folder.exists():
+        print("Output directory does not exist. Attempting to create...")
+        try:
+            check_folder.mkdir()
+        except (FileNotFoundError, FileExistsError) as err:
+            print(f"Could not create output folder. See error below:\n{err}")
+            return False
+        print("Directory created successfully.")
+    return check_folder
 
 
 def jpgs_to_convert(directory: pathlib) -> list:
