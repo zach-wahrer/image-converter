@@ -21,6 +21,11 @@ class TestJPGToPNG(unittest.TestCase):
         input = jpgs_to_convert(directory)
         self.assertFalse(input)
 
+    def test_input_files_no_jpg_folder(self):
+        directory = pathlib.Path('tests/nojpgs/')
+        input = jpgs_to_convert(directory)
+        self.assertFalse(input)
+
     # Input folder validation
     def test_input_folder_valid(self):
         input = input_folder_exists('tests/images/')

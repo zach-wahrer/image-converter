@@ -56,7 +56,7 @@ def verify_output_folder():
 def jpgs_to_convert(directory: pathlib) -> list:
     """Create a list of jpg files in a directory."""
     files_to_convert = []
-    expression = re.compile(r"(.jpg)|(.JPG)|(.jpeg)$")
+    expression = re.compile(r"(\.jpg)|(\.JPG)|(\.jpeg)$")
     for file in directory.iterdir():
         if expression.search(str(file)):
             files_to_convert.append(str(file))
