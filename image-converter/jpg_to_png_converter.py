@@ -17,10 +17,9 @@ def main():
     input_folder = argv[1]
     output_folder = argv[2]
 
-    if not input_folder_exists(input_folder):
-        print("Input folder doesn't exist or insufficent permissions.")
+    files_to_convert = input_folder_exists(input_folder)
+    if not files_to_convert:
         quit()
-    # Check if input folder exists and has jpg files in it
 
     # Check if output_folder exists, if not, create
 
@@ -38,8 +37,13 @@ def verify_command_args(args: list) -> bool:
 def input_folder_exists(input_folder: str) -> list:
     directory = pathlib.Path(input_folder)
     if not directory.exists():
+        print("Input folder doesn't exist or insufficent permissions.")
         return False
-    return True
+    files_to_convert = jpgs_to_convert(directory)
+    if not files_to_convert:
+        print("Input folder doesn't contain jpgs.")
+        return False
+    return files_to_convert
 
 
 def verify_output_folder():
@@ -47,15 +51,17 @@ def verify_output_folder():
 
 
 def jpgs_to_convert(directory: pathlib) -> list:
-    # for file in directory.iterdir():
-    #     if 'jpg' in str(file):
-    #         print(file)
-    # return True
-    pass
+    """Create a list of jpg files in a directory."""
+    files_to_convert = []
+    expression = re.compile(r"(.jpg)|(.JPG)|(.jpeg)$")
+    for file in directory.iterdir():
+        if expression.search(str(file)):
+            files_to_convert.append(str(file))
+    return files_to_convert
 
 
 def print_usage():
-    print("Usage: python3 jpg_to_png_converter.py input_folder/ output_folder/")
+    print("Usage: python3 jpg_to_png_converter.py input_folder output_folder")
     quit()
 
 
