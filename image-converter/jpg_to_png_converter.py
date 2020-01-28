@@ -28,7 +28,7 @@ def main():
     converted_counter = 0
 
     for file in files_to_convert:
-        converted_counter += save_to_png(file)
+        converted_counter += save_to_png(file, verified_output_folder)
 
     if converted_counter > 0:
         print(f"Successfully converted {converted_counter} files.")
@@ -82,14 +82,33 @@ def jpgs_to_convert(directory: pathlib) -> list:
     return files_to_convert
 
 
-def save_to_png(file_path: str, out) -> int:
-    # try:
-    #     Image.open(file_path).save()
-    #
-    # except IOError:
-    #
-    # return 1
-    pass
+def save_to_png(file_with_path: str, save_dir: str) -> int:
+    """Convert jpg file to png and save to specified directory."""
+    filename = get_file_name(file_with_path)
+    save_file_with_path = save_dir + "/" + filename + ".png"
+    if check_existing(save_file_with_path):
+        print(f"{save_file_with_path} already exists. Skipping.")
+        return 0
+    else:
+        try:
+            Image.open(file_with_path).save(save_file_with_path)
+
+        except IOError:
+            print(f"{file_with_path} couldn't be converted.")
+            return 0
+
+        print(f"{save_file_with_path} saved successfully.")
+        return 1
+
+
+def check_existing(dir_or_file: str) -> bool:
+    """Check for existing output file."""
+    return pathlib.Path(dir_or_file).exists()
+
+
+def get_file_name(file_with_path: str) -> str:
+    """Extract file name from a path/filename.jpg."""
+    return file_with_path.split("/")[-1].split(".")[0]
 
 
 def print_usage():

@@ -2,8 +2,8 @@
 
 import unittest
 from jpg_to_png_converter import (jpgs_to_convert, input_folder_exists,
-                                  verify_command_args, verify_output_folder,
-                                  pathlib)
+                                  save_to_png, verify_command_args,
+                                  verify_output_folder, pathlib)
 
 
 class TestJPGToPNG(unittest.TestCase):
@@ -47,6 +47,27 @@ class TestJPGToPNG(unittest.TestCase):
     def test_input_folder_invalid_non_existant(self):
         input = input_folder_exists('files/')
         self.assertFalse(input)
+
+    # Conversion / saving png tests
+    def test_save_to_png_valid(self):
+        input = save_to_png('tests/images/pikachu.jpg',
+                            'tests/test_file_output')
+        file = pathlib.Path('tests/test_file_output/pikachu.png')
+        self.assertTrue(file.exists())
+        self.assertEqual(input, 1)
+        file.unlink()
+
+    def test_save_to_png_file_cant_be_written(self):
+        input = save_to_png('tests/images/doesnt_exist.jpg',
+                            'tests/test_file_output')
+        file = pathlib.Path('tests/test_file_output/doesnt_exist.png')
+        self.assertFalse(file.exists())
+        self.assertEqual(input, 0)
+
+    def test_save_to_png_existing_file(self):
+        input = save_to_png('tests/images/test_file_output/exists.jpg',
+                            'tests/test_file_output')
+        self.assertEqual(input, 0)
 
     # Command line input validation
     def test_argv_valid(self):
