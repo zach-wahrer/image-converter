@@ -24,11 +24,18 @@ def main():
     verified_output_folder = verify_output_folder(output_folder)
     if not verified_output_folder:
         quit()
-    print("Working")
 
-    # Loop through input folder
-    # Convert images to png
-    # Save image to new folder
+    converted_counter = 0
+
+    for file in files_to_convert:
+        converted_counter += save_to_png(file)
+
+    if converted_counter > 0:
+        print(f"Successfully converted {converted_counter} files.")
+    else:
+        print("All conversions unsuccessful. Please check your files.")
+
+    quit()
 
 
 def verify_command_args(args: list) -> bool:
@@ -51,7 +58,7 @@ def input_folder_exists(input_folder: str) -> list:
     return files_to_convert
 
 
-def verify_output_folder(output_folder: str) -> pathlib:
+def verify_output_folder(output_folder: str) -> str:
     """Check output folder exists, create if it doesn't."""
     check_folder = pathlib.Path(output_folder)
     if not check_folder.exists():
@@ -62,7 +69,7 @@ def verify_output_folder(output_folder: str) -> pathlib:
             print(f"Could not create output folder. See error below:\n{err}")
             return False
         print("Directory created successfully.")
-    return check_folder
+    return str(check_folder)
 
 
 def jpgs_to_convert(directory: pathlib) -> list:
@@ -73,6 +80,16 @@ def jpgs_to_convert(directory: pathlib) -> list:
         if expression.search(str(file)):
             files_to_convert.append(str(file))
     return files_to_convert
+
+
+def save_to_png(file_path: str, out) -> int:
+    # try:
+    #     Image.open(file_path).save()
+    #
+    # except IOError:
+    #
+    # return 1
+    pass
 
 
 def print_usage():

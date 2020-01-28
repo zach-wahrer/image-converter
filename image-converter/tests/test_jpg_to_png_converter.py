@@ -62,14 +62,15 @@ class TestJPGToPNG(unittest.TestCase):
     # Output folder verification
     def test_output_folder_previously_exists(self):
         input = verify_output_folder('tests/empty')
-        output = pathlib.Path('tests/empty')
+        output = 'tests/empty'
         self.assertEqual(input, output)
 
     def test_output_folder_create_folder(self):
         input = verify_output_folder('tests/test_output')
-        output = pathlib.Path('tests/test_output')
+        output = 'tests/test_output'
         self.assertEqual(input, output)
-        output.rmdir()
+        cleanup = pathlib.Path('tests/test_output')
+        cleanup.rmdir()
 
     def test_output_folder_cannot_create_folder(self):
         input = verify_output_folder('tests/this_does_not_exist/test_output')
