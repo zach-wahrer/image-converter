@@ -29,12 +29,14 @@ def main():
 
 
 def verify_command_args(args: list) -> bool:
+    """Check for correct amount of input args."""
     if len(args) != 3:
         return False
     return True
 
 
 def input_folder_exists(input_folder: str) -> list:
+    """Check input folder exists and return jpg list."""
     directory = pathlib.Path(input_folder)
     if not directory.exists():
         print("Input folder doesn't exist or insufficent permissions.")
@@ -47,6 +49,7 @@ def input_folder_exists(input_folder: str) -> list:
 
 
 def verify_output_folder():
+    """Check output folder exists, create if it doesn't."""
     pass
 
 
