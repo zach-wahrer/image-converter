@@ -47,11 +47,10 @@ def verify_command_args(args: list) -> bool:
 
 def input_folder_exists(input_folder: str) -> list:
     """Check input folder exists and return jpg list."""
-    directory = pathlib.Path(input_folder)
-    if not directory.exists():
+    if not check_existing(input_folder):
         print("Input folder doesn't exist or insufficent permissions.")
         return False
-    files_to_convert = jpgs_to_convert(directory)
+    files_to_convert = jpgs_to_convert(input_folder)
     if not files_to_convert:
         print("Input folder doesn't contain jpgs.")
         return False
@@ -60,23 +59,22 @@ def input_folder_exists(input_folder: str) -> list:
 
 def verify_output_folder(output_folder: str) -> str:
     """Check output folder exists, create if it doesn't."""
-    check_folder = pathlib.Path(output_folder)
-    if not check_folder.exists():
+    if not check_existing(output_folder):
         print("Output directory does not exist. Attempting to create...")
         try:
-            check_folder.mkdir()
+            pathlib.Path(output_folder).mkdir()
         except (FileNotFoundError, FileExistsError) as err:
             print(f"Could not create output folder. See error below:\n{err}")
             return False
         print("Directory created successfully.")
-    return str(check_folder)
+    return output_folder
 
 
-def jpgs_to_convert(directory: pathlib) -> list:
+def jpgs_to_convert(folder: str) -> list:
     """Create a list of jpg files in a directory."""
     files_to_convert = []
     expression = re.compile(r"(\.jpg)|(\.JPG)|(\.jpeg)$")
-    for file in directory.iterdir():
+    for file in pathlib.Path(folder).iterdir():
         if expression.search(str(file)):
             files_to_convert.append(str(file))
     return files_to_convert
@@ -102,7 +100,7 @@ def save_to_png(file_with_path: str, save_dir: str) -> int:
 
 
 def check_existing(dir_or_file: str) -> bool:
-    """Check for existing output file."""
+    """Check for existing output file or directory."""
     return pathlib.Path(dir_or_file).exists()
 
 
