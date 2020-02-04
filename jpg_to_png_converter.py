@@ -18,11 +18,9 @@ def main():
     output_folder = argv[2]
 
     files_to_convert = input_folder_exists(input_folder)
-    if not files_to_convert:
-        quit()
-
     verified_output_folder = verify_output_folder(output_folder)
-    if not verified_output_folder:
+
+    if not files_to_convert and not verified_output_folder:
         quit()
 
     converted_counter = 0
