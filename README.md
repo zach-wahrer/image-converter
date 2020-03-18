@@ -8,7 +8,7 @@ Image-Converter is a simple command line program, written in Python3, to convert
 The image converter uses the Pillow module to do the actual conversions, so you'll need to have it installed in your environment. `conda install -c anaconda pillow
 ` or `pip install Pillow` will do the trick.
 
-All other dependencies are standar Python modules, so no further installation required.
+All other dependencies are standard Python modules, so no further installation required.
 
 ### Running
 ---
